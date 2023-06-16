@@ -1,0 +1,10 @@
+{
+  "label": {
+    "description": "Description",
+    "change-locale": "Change locale"
+  },
+  "action": {
+    "showMore": "Show more",
+    "hide": "Hide"
+  }
+}

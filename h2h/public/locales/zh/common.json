@@ -1,0 +1,10 @@
+{
+  "label": {
+    "description": "描述",
+    "change-locale": "改变语言"
+  },
+  "action": {
+    "showMore": "显示更多",
+    "hide": "隐藏"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "id": "17171565_1416374",
+  "title": "\u5947\u5e7b\u5192\u9669\u77ed\u5267\u300a\u72ee\u9e6b\u300b\uff08The Gryphon\uff09",
+  "_type": "playlist",
+  "entries": [
+    {
+      "ie_key": "BiliBili",
+      "id": "BV1gu4y1Z7fw",
+      "_type": "url",
+      "url": "https://www.bilibili.com/video/BV1gu4y1Z7fw",
+      "__x_forwarded_for_ip": null
+    },
+    {
+      "ie_key": "BiliBili",
+      "id": "BV1oo4y1M7PS",
+      "_type": "url",
+      "url": "https://www.bilibili.com/video/BV1oo4y1M7PS",
+      "__x_forwarded_for_ip": null
+    },
+    {
+      "ie_key": "BiliBili",
+      "id": "BV1UV4y1U7yJ",
+      "_type": "url",
+      "url": "https://www.bilibili.com/video/BV1UV4y1U7yJ",
+      "__x_forwarded_for_ip": null
+    },
+    {
+      "ie_key": "BiliBili",
+      "id": "BV1F8411Z7uL",
+      "_type": "url",
+      "url": "https://www.bilibili.com/video/BV1F8411Z7uL",
+      "__x_forwarded_for_ip": null
+    }
+  ],
+  "webpage_url": "https://space.bilibili.com/17171565/channel/collectiondetail?sid=1416374",
+  "original_url": "https://space.bilibili.com/17171565/channel/collectiondetail?sid=1416374",
+  "webpage_url_basename": "collectiondetail",
+  "webpage_url_domain": "space.bilibili.com",
+  "extractor": "BilibiliSpacePlaylist",
+  "extractor_key": "BilibiliSpacePlaylist",
+  "playlist_count": 4,
+  "__files_to_move": {},
+  "epoch": 1685979324,
+  "_version": {
+    "version": "2023.03.04",
+    "current_git_head": null,
+    "release_git_head": "392389b7df7b818f794b231f14dc396d4875fbad",
+    "repository": "yt-dlp/yt-dlp"
+  }
+}

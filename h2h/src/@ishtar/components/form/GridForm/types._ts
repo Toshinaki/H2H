@@ -1,0 +1,71 @@
+import {
+  ColProps,
+  DividerProps,
+  NumberInputProps,
+  SwitchProps,
+  TextInputProps,
+  TextProps,
+} from "@mantine/core";
+import { DatePickerProps } from "@mantine/dates";
+import { Override, Paths, StringKeyof } from "types";
+import { RadiosProps } from "./components/Radios";
+
+export type FormDividerType = {
+  type: "divider";
+  props?: DividerProps;
+};
+
+export type BaseFieldType = {
+  field?: React.ReactElement;
+  Field?: React.ElementType;
+  render?: (props: unknown, value?: unknown, errors?: unknown) => JSX.Element;
+  wrapperProps?: ColProps;
+};
+
+export type FieldType<Fields> = Override<
+  BaseFieldType,
+  {
+    name: StringKeyof<Fields>; // field name; required for form fields, not for other elements
+    // type: Exclude<FieldType, "group" | "divider">; // field element type name // TODO oneof
+    // props?: RenderPropsMap[F]; // props for the field; inputProps < props < field.props
+    groupWrapperProps?: object;
+    helperText?: string;
+  } & (
+    | { type: "text"; props?: TextInputProps }
+    | { type: "multiline"; props?: TextInputProps }
+    | { type: "email"; props?: TextInputProps }
+    | { type: "number"; props?: NumberInputProps }
+    | { type: "date"; props?: DatePickerProps }
+    | { type: "radios"; props?: RadiosProps }
+    | { type: "switch"; props?: SwitchProps }
+  )
+>;
+
+// export type GroupFieldType<Fields, K in keyof Fields> = Override<
+//   FieldType<Fields>,
+//   {
+//     name: StringKeyof<Fields>;
+//     type: "group";
+//     label: React.ReactNode;
+//     labelProps?: TextProps;
+//     children: GridFormFieldsType<Fields[GroupFieldType<Fields>["name"]]>;
+//   }
+// >;
+
+export type GroupFieldType<Fields> = {
+  [K in StringKeyof<Fields>]: Override<
+    FieldType<Fields>,
+    {
+      name: K;
+      type: "group";
+      label: React.ReactNode;
+      labelProps?: TextProps;
+      // children: Array<FieldType<Fields> | BaseFieldType<Fields> | FormDividerType>;
+      children: GridFormFieldsType<Fields>;
+    }
+  >;
+}[StringKeyof<Fields>];
+
+export type GridFormFieldsType<T> = Array<
+  FieldType<T> | BaseFieldType | GroupFieldType<T> | FormDividerType
+>;

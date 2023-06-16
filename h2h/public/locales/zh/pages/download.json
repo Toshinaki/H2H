@@ -1,0 +1,36 @@
+{
+  "input": {
+    "placeholder": "将视频链接粘贴到这里"
+  },
+  "buttons": {
+    "start": "开始"
+  },
+  "tabs": {
+    "formats": "可用格式",
+    "videos": "视频列表"
+  },
+  "messages": {
+    "error": {
+      "history": {
+        "ALREADY_EXISTS": "给定 id 的解析历史已经存在：",
+        "NOT_FOUND": "解析历史不存在："
+      }
+    },
+    "action": {
+      "history": {
+        "create": {
+          "success": "成功解析视频信息：",
+          "fail": "解析视频信息失败："
+        },
+        "update": {
+          "success": "成功解析视频信息：",
+          "fail": "解析视频信息失败："
+        },
+        "delete": {
+          "success": "成功删除解析历史：",
+          "fail": "删除解析历史失败："
+        }
+      }
+    }
+  }
+}

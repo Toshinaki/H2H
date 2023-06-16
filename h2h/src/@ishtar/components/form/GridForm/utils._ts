@@ -1,0 +1,72 @@
+import {
+  SwitchProps,
+  Switch,
+  Textarea,
+  TextareaProps,
+  TextInput,
+  TextInputProps,
+  NumberInput,
+  NumberInputProps,
+} from "@mantine/core";
+import { DatePicker, DatePickerProps } from "@mantine/dates";
+import Radios, { RadiosProps } from "./components/Radios";
+// types
+import { FieldType, GridFormFieldsType } from "./types._ts";
+
+export const FieldTypes = [
+  "text",
+  "multiline",
+  "number",
+  "email",
+  "password",
+  "date",
+  "autocomplete",
+  "checkbox",
+  "checkboxes",
+  "switch",
+  "switches",
+  "radios",
+  "select",
+  "group",
+  "divider",
+] as const;
+
+export const getFieldType = (type: typeof FieldTypes[number]): React.ElementType | null => {
+  switch (type) {
+    case "date":
+      return DatePicker;
+    case "text":
+    case "email":
+      return TextInput;
+    case "number":
+      return NumberInput;
+    case "multiline":
+      return Textarea;
+    case "radios":
+      return Radios;
+    case "switch":
+      return Switch;
+    default:
+      return null;
+  }
+};
+
+export type RenderFieldProps =
+  | DatePickerProps
+  | TextInputProps
+  | NumberInputProps
+  | TextareaProps
+  | RadiosProps
+  | SwitchProps;
+
+// export const buildDefaults = <T>(fields: GridFormFieldsType<T>) => {
+//   let result: { [key: string]: any } = {};
+//   fields.forEach((field) => {
+//     if ("children" in field) {
+//       result[field.name] = buildDefaults(field.children);
+//     } else if ("name" in field) {
+//       result[field.name] = "";
+//     }
+//   });
+//   return result;
+// };

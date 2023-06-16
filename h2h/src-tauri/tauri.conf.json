@@ -1,0 +1,69 @@
+{
+  "build": {
+    "beforeDevCommand": "yarn dev",
+    "beforeBuildCommand": "yarn build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist",
+    "withGlobalTauri": false
+  },
+  "package": {
+    "productName": "h2h",
+    "version": "0.0.1"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "path": { "all": true },
+      "fs": {
+        "all": true,
+        "scope": ["$DOCUMENT/**/*", "$APPCONFIG", "$APPCONFIG/**/*", "$APPDATA", "$APPDATA/**/*"]
+      },
+      "protocol": {
+        "all": false,
+        "asset": true,
+        "assetScope": ["$DOCUMENT/SecretBase/**/*"]
+      },
+      "shell": {
+        "sidecar": true,
+        "scope": [{ "name": "binaries/yt-dlp", "sidecar": true, "args": true }]
+      },
+      "window": {
+        "all": false,
+        "close": true,
+        "hide": true,
+        "show": true,
+        "maximize": true,
+        "minimize": true,
+        "unmaximize": true,
+        "unminimize": true,
+        "startDragging": true
+      }
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.toshinaki.h2h",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "externalBin": ["binaries/yt-dlp"]
+    },
+    "security": { "csp": null },
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "H2H",
+        "width": 800,
+        "height": 600,
+        "minWidth": 450,
+        "minHeight": 250,
+        "decorations": false
+      }
+    ]
+  }
+}

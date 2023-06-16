@@ -1,0 +1,13 @@
+{
+  "view": {
+    "view": "View",
+    "history": "History"
+  },
+  "help": {
+    "help": "Help",
+    "documentation": "Documentation",
+    "reportIssue": "Report Issue",
+    "checkUpdate": "Check for Updates...",
+    "about": "About"
+  }
+}
