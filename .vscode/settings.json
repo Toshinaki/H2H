@@ -1,5 +1,22 @@
 {
-  "i18n-ally.localesPaths": ["h2h/public/locales"],
-  "i18n-ally.sourceLanguage": "en",
-  "i18n-ally.keystyle": "nested"
+	"biome.requireConfiguration": true,
+	"biome.lsp.trace.server": "verbose",
+	"biome.lsp.bin": {
+		"linux-x64": "/path/to/biome",
+		"linux-arm64-musl": "/path/to/biome",
+		"darwin-arm64": "/path/to/biome",
+		"win32-x64": "app/node_modules/.pnpm/@biomejs+biome@1.9.4/node_modules/@biomejs/cli-win32-x64/biome.exe"
+	},
+	"editor.formatOnSave": true,
+	"js/ts.hover.maximumLength": 500000,
+	
+	"files.readonlyInclude": {
+		"**/routeTree.gen.ts": true
+	},
+	"files.watcherExclude": {
+		"**/routeTree.gen.ts": true
+	},
+	"search.exclude": {
+		"**/routeTree.gen.ts": true
+	}
 }

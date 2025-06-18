@@ -1,0 +1,24 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.button {
+  padding-left: 2.5rem;
+  padding-right: 0.5rem;
+}
+
+.iconWrapper {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  pointer-events: none;
+  cursor: pointer;
+}
+
+.icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  transform: rotateZ(-45deg);
+  color: var(--mui-palette-primary-main);
+}

@@ -1,0 +1,63 @@
+{
+  "action": {
+    "lockapp": "Lock Ishtar",
+    "search": "Search",
+    "scrollTop": "Scroll to top",
+    "collapseAll": "Collapse all",
+    "expandAll": "Expand all",
+    "switchToItem": "Switch to {{item}}",
+    "confirm": "Confirm",
+    "show": "Show",
+    "close": "Close"
+  },
+  "form": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "reset": "Reset",
+    "save": "Save",
+    "saveItem": "Save {{item}}",
+    "create": "Create",
+    "createItem": "Create {{item}}",
+    "add": "Add",
+    "addItem": "Add {{item}}",
+    "update": "Update",
+    "updateItem": "Update {{item}}",
+    "edit": "Edit",
+    "editItem": "Edit {{item}}",
+    "delete": "Delete",
+    "deleteItem": "Delete {{item}}",
+    "remove": "Remove",
+    "removeItem": "Remove {{item}}"
+  },
+  "authentication": {
+    "signin": "Signin",
+    "signout": "Signout",
+    "signup": "Signup"
+  },
+  "label": {
+    "createdAt": "Created at: ",
+    "updatedAt": "Last updated at: ",
+    "shortcuts": "Shortcuts",
+    "settings": "Settings",
+    "about": "About",
+    "sponsor": "Buy me a tea",
+    "event": "Event",
+    "label": "Label",
+    "tags": "Tags",
+    "description": "Description",
+    "copy": "Copy",
+    "copied": "Copied",
+    "sync": "Sync",
+    "radius": "Rounded",
+    "size": "Size",
+    "width": "Width",
+    "textSize": "Text size",
+    "color": "Color",
+    "theme": "Theme",
+    "darkmode": "Dark mode",
+    "reversed": "Reversed"
+  },
+  "error": {
+    "notfound": "Not found"
+  }
+}
