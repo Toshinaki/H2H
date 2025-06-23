@@ -49,9 +49,9 @@ export type ConfigSlice = ConfigState & ConfigActions;
 
 export interface UIActions {
   setUIState: (uiState: PartialDeep<UIState>) => void;
-  toggleSidebarOpen: (position: "left" | "right") => void;
-  toggleSidebarHiddenOpen: (position: "left" | "right") => void;
-  toggleSidebarFold: (position: "left" | "right") => void;
+  toggleSidebarOpen: (position: "left" | "right", open?: boolean) => void;
+  toggleSidebarHiddenOpen: (position: "left" | "right", open?: boolean) => void;
+  toggleSidebarFold: (position: "left" | "right", fold?: boolean) => void;
   reset: () => void;
 }
 export type UISlice = UIState & UIActions;

@@ -1,11 +1,14 @@
 import { useAppStore } from "store";
-import { ThemeProvider } from "@mui/material/styles";
+import { createTheme, ThemeProvider, type Theme } from "@mui/material/styles";
 import { useShallow } from "zustand/react/shallow";
 import { useSmallerThan } from "@ig/hooks";
 import getTheme from "@ig/utils/getTheme";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Drawer from "@mui/material/Drawer";
+import { useEffect } from "react";
+import _ from "lodash";
+import { THEMES } from "@ig/configs";
 
 interface LayoutSidebarProps {
   position: "left" | "right";
@@ -36,18 +39,31 @@ const LayoutSidebar = ({ position, children }: React.PropsWithChildren<LayoutSid
   const isSmallScreen = useSmallerThan(autohide.breakpoint);
   const shouldFold = useSmallerThan(fold.breakpoint || 0);
 
+  useEffect(() => {
+    if (isSmallScreen) {
+      toggleSidebarHiddenOpen(position, false);
+    }
+  }, [isSmallScreen, position, toggleSidebarHiddenOpen]);
+
   const id = `${position}-sidebar`;
 
   const theme = getTheme({
     id: themeId,
-    cssVarPrefix: "sidebar",
+    cssVarPrefix: "ig",
     rootSelector: `#${id}`,
   });
+  console.log({ theme });
 
   const width = `${(((fold.enabled && folded) || shouldFold) && fold.size) || size}px`;
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider
+      theme={(theme: Theme) => {
+        const { vars, ...rest } = theme;
+        console.log({ vars });
+        return createTheme(_.merge({}, rest, THEMES[themeId], { cssVariables: true }));
+      }}
+    >
       {autohide.enabled && isSmallScreen && (
         <SwipeableDrawer
           id={id}

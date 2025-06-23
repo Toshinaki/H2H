@@ -5,7 +5,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
 
-  * {
+  & > * {
     border: 1px solid #f00;
   }
 

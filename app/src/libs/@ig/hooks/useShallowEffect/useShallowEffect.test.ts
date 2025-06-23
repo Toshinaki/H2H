@@ -2,7 +2,7 @@ import { renderHook } from "@testing-library/react";
 import { useShallowEffect } from "./useShallowEffect";
 import { describe, beforeEach, it, expect, vi } from "vitest";
 
-describe("@mantine/hooks/use-shallow-effect", () => {
+describe("@ig/hooks/use-shallow-effect", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });

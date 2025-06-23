@@ -19,6 +19,7 @@ const CommonSchema = z.object({
   size: z.union([SizeSchema, ResponsiveSizeSchema]),
   // TODO use enum
   theme: ThemeIDSchema,
+  darkmode: z.boolean(),
 });
 
 const SidebarConfigSchema = z
@@ -52,6 +53,7 @@ export const LayoutConfigSchema = z.object({
   footer: CommonSchema,
   main: z.object({
     theme: ThemeIDSchema,
+    darkmode: z.boolean(),
   }),
 });
 

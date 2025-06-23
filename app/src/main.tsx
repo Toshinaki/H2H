@@ -1,10 +1,10 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import App from "@ig/core/App";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
-import App from "@ig/core/App";
 
 // Create a new router instance
 const router = createRouter({
@@ -25,7 +25,7 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <App leftSidebar="left">
+      <App>
         <RouterProvider router={router} />
       </App>
     </StrictMode>,

@@ -20,7 +20,19 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "correctness": {
+        "useExhaustiveDependencies": {
+          "level": "warn",
+          "options": {
+            "reportMissingDependenciesArray": true,
+            "reportUnnecessaryDependencies": true
+          }
+        }
+      },
+      "suspicious": {
+        "noConfusingVoidType": "off"
+      }
     }
   },
   "javascript": {

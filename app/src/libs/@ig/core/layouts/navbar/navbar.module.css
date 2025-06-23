@@ -1,0 +1,18 @@
+.navbar {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* &[data-variant="standard"] {
+  } */
+
+  .navbarHeader,
+  .navbarFooter {
+    flex-shrink: 0;
+  }
+
+  .navbarCenter {
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
+}

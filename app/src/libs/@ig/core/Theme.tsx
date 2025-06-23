@@ -18,6 +18,7 @@ const Theme = ({ children }: React.PropsWithChildren) => {
         id: theme,
         scale,
         radius,
+        cssVarPrefix: "ig",
       })}
     >
       <CssBaseline />

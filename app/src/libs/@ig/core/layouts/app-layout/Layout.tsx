@@ -16,10 +16,15 @@ const Layout = ({
   rightSidebar,
   children,
 }: React.PropsWithChildren<LayoutProps>) => {
-  const { layout: layoutConfig, scroll } = useAppStore((state) => state.config.current.ui);
+  const { layout: layoutConfig, scroll, scale } = useAppStore((state) => state.config.current.ui);
 
   return (
-    <div data-scroll={scroll} className={styles.layout}>
+    <div
+      data-scroll={scroll}
+      data-scheme={layoutConfig.main.darkmode ? "dark" : "light"}
+      className={styles.layout}
+      style={{ "--app-scale": scale } as React.CSSProperties}
+    >
       {layoutConfig.leftSidebar.show && !layoutConfig.leftSidebar.inner && leftSidebar && (
         <LayoutSidebar position="left">{leftSidebar}</LayoutSidebar>
       )}

@@ -10,12 +10,14 @@ export const DEFAULT_UI_CONFIG: UIConfig = {
       },
       size: 60,
       theme: "default",
+      darkmode: false,
     },
     footer: {
       show: true,
       inner: false,
       size: 60,
       theme: "default",
+      darkmode: false,
     },
     leftSidebar: {
       show: true,
@@ -33,6 +35,7 @@ export const DEFAULT_UI_CONFIG: UIConfig = {
       radius: 0,
       size: 280,
       theme: "default-dark",
+      darkmode: true,
     },
     rightSidebar: {
       show: true,
@@ -48,9 +51,11 @@ export const DEFAULT_UI_CONFIG: UIConfig = {
       radius: 0,
       size: 280,
       theme: "default",
+      darkmode: false,
     },
     main: {
       theme: "default",
+      darkmode: false,
     },
   },
   radius: 4,

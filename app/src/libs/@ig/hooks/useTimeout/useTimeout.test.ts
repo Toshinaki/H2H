@@ -11,7 +11,7 @@ const setupTimer = (timeout: number = defaultTimeout) => ({
   advanceTimerToNextTick: () => vi.advanceTimersByTime(timeout),
 });
 
-describe("@mantine/hooks/use-timeout", () => {
+describe("@ig/hooks/use-timeout", () => {
   beforeAll(() => {
     vi.useFakeTimers();
     vi.spyOn(global, "setTimeout");

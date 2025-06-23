@@ -11,10 +11,16 @@
 import type { CreateFileRoute, FileRoutesByPath } from "@tanstack/react-router"
 
 import { Route as rootRouteImport } from "./routes/__root"
+import { Route as SettingsRouteImport } from "./routes/settings"
 import { Route as HistoryRouteImport } from "./routes/history"
 import { Route as AboutRouteImport } from "./routes/about"
 import { Route as IndexRouteImport } from "./routes/index"
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: "/settings",
+  path: "/settings",
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HistoryRoute = HistoryRouteImport.update({
   id: "/history",
   path: "/history",
@@ -35,30 +41,34 @@ export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
   "/about": typeof AboutRoute
   "/history": typeof HistoryRoute
+  "/settings": typeof SettingsRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
   "/about": typeof AboutRoute
   "/history": typeof HistoryRoute
+  "/settings": typeof SettingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   "/": typeof IndexRoute
   "/about": typeof AboutRoute
   "/history": typeof HistoryRoute
+  "/settings": typeof SettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: "/" | "/about" | "/history"
+  fullPaths: "/" | "/about" | "/history" | "/settings"
   fileRoutesByTo: FileRoutesByTo
-  to: "/" | "/about" | "/history"
-  id: "__root__" | "/" | "/about" | "/history"
+  to: "/" | "/about" | "/history" | "/settings"
+  id: "__root__" | "/" | "/about" | "/history" | "/settings"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   HistoryRoute: typeof HistoryRoute
+  SettingsRoute: typeof SettingsRoute
 }
 
 declare module "@tanstack/react-router" {
@@ -82,6 +92,13 @@ declare module "@tanstack/react-router" {
       path: "/history"
       fullPath: "/history"
       preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/settings": {
+      id: "/settings"
+      path: "/settings"
+      fullPath: "/settings"
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -114,11 +131,21 @@ declare module "./routes/history" {
     FileRoutesByPath["/history"]["fullPath"]
   >
 }
+declare module "./routes/settings" {
+  const createFileRoute: CreateFileRoute<
+    "/settings",
+    FileRoutesByPath["/settings"]["parentRoute"],
+    FileRoutesByPath["/settings"]["id"],
+    FileRoutesByPath["/settings"]["path"],
+    FileRoutesByPath["/settings"]["fullPath"]
+  >
+}
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   HistoryRoute: HistoryRoute,
+  SettingsRoute: SettingsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -3,15 +3,13 @@ import Theme from "./Theme";
 import { Initializer, type InitializerProps } from "./Initializer";
 import { DefaultSplash } from "@ig/components/splash";
 import { ScrollProvider } from "@ig/components/scroll/ScrollProvider";
-import Layout, { type LayoutProps } from "./layouts/app-layout/Layout";
 
-interface AppProps extends Partial<InitializerProps>, LayoutProps {
+interface AppProps extends Partial<InitializerProps> {
   splash?: React.ReactNode;
 }
 
 const App = (props: React.PropsWithChildren<AppProps>) => {
-  const { checkers, checkerActions, loaders, loaderActions, splash, children, ...layoutProps } =
-    props;
+  const { checkers, checkerActions, loaders, loaderActions, splash, children } = props;
 
   return (
     <I18nProvider>
@@ -24,9 +22,7 @@ const App = (props: React.PropsWithChildren<AppProps>) => {
         />
         {splash || <DefaultSplash />}
 
-        <ScrollProvider>
-          <Layout {...layoutProps}>{children}</Layout>
-        </ScrollProvider>
+        <ScrollProvider>{children}</ScrollProvider>
       </Theme>
     </I18nProvider>
   );
