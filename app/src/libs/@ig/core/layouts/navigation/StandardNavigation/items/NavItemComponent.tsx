@@ -16,6 +16,9 @@ const NavItemComponent = (props: NavigationItemComponentProps) => {
 
   const label = t(`${item.id}.name`, { defaultValue: item.name || "" });
 
+  const { nestedLevel = 0 } = props;
+  const itemPadding = nestedLevel > 0 ? 2.8 + nestedLevel : 1.2;
+
   return (
     <Tooltip title={props.showTooltip && label} placement="right">
       <ListItem onClick={(e) => props.onItemClick?.(item, e)} className={styles.navitem}>
@@ -26,8 +29,11 @@ const NavItemComponent = (props: NavigationItemComponentProps) => {
           activeProps={{ className: styles.isActive }}
           disabled={item.disabled}
           className={styles.navlistItem}
+          style={{ paddingLeft: `${itemPadding > 8 ? 8 : itemPadding}rem` }}
         >
-          {icon && <ListItemIcon className={styles.navitemSection}>{icon}</ListItemIcon>}
+          {nestedLevel === 0 && icon && (
+            <ListItemIcon className={styles.navitemIcon}>{icon}</ListItemIcon>
+          )}
 
           <ListItemText
             primary={label}
@@ -42,38 +48,6 @@ const NavItemComponent = (props: NavigationItemComponentProps) => {
           {/* TODO */}
           {/* {item.badge} */}
         </ListItemButton>
-
-        {/* <NavLinkAdapter
-          to={item.path}
-          activeOptions={{ exact: item.exact }}
-          disabled={item.disabled}
-          {...props.itemProps}
-          className={styles.navlistItem}
-        >
-          {({ isActive, isTransitioning }) => (
-            <ListItemButton
-              component="button"
-              onClick={(e) => props.onItemClick?.(item, e)}
-              className={clsx(
-                styles.navitem,
-                isActive && styles.isActive,
-                isTransitioning && styles.isTransitioning,
-              )}
-            >
-              {icon && <ListItemIcon className={styles.navitemSection}>{icon}</ListItemIcon>}
-
-              <ListItemText
-                primary={label}
-                secondary={t(`${item.id}.description`, { defaultValue: item.description || "" })}
-                classes={{
-                  root: styles.navitemBody,
-                  primary: styles.navitemTitle,
-                  secondary: styles.navitemSubtitle,
-                }}
-              />
-            </ListItemButton>
-          )}
-        </NavLinkAdapter> */}
       </ListItem>
     </Tooltip>
   );

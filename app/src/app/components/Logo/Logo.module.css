@@ -1,0 +1,40 @@
+.logo {
+  padding: 0 0.625rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+
+  .icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .logoText {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    transition: opacity var(--ig-transition-duration-shortest) var(--ig-transition-easing-easeInOut);
+
+    .top {
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: 1;
+      font-style: italic;
+    }
+
+    .bottom {
+      font-size: 0.85rem;
+      font-weight: 600;
+      line-height: 1;
+    }
+  }
+}
+
+[data-folded="true"] {
+  &:not([data-folded-opened="true"]) {
+    .logoText {
+      opacity: 0;
+    }
+  }
+}

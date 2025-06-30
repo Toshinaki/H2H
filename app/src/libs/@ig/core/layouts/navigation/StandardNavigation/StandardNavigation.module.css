@@ -3,17 +3,22 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 0 12px;
+  padding: 0 0.75rem;
   list-style-type: none;
   white-space: nowrap;
 }
 
 .navitem {
-  color: var(--mantine-color-dimmed);
+  width: 100%;
+  min-height: 2.25rem;
+  margin: 0;
+  margin-bottom: .25rem;
+  padding: 0;
+  color: color-mix(in srgb, var(--ig-palette-text-primary) 70%, transparent);
+  transition: color var(--ig-transition-duration-shortest) var(--ig-transition-easing-easeInOut);
 
-  &:hover,
-  &:has(.navlistCollapse[data-expanded]) {
-    color: unset;
+  &:hover {
+    color: var(--ig-palette-text-primary);
   }
 }
 
@@ -22,53 +27,109 @@
 .navlistGroup,
 .navlistCollapse {
   width: 100%;
-  min-height: 36px;
-  margin-bottom: 4px;
 
-  .navitemSection {
-    width: 20px;
-    height: 20px;
+  .navitemIcon {
+    min-width: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 1rem;
   }
 
   .navitemBody {
-    opacity: 1;
+    margin: 0;
+  }
 
-    .navitemTitle {
-      font-size: 12px;
-      line-height: 20px;
-      font-weight: 500;
+  .navitemTitle {
+    font-size: 0.75rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .navitemSubtitle {
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
+.navlistItem,
+.navlistLink,
+.navlistCollapse {
+  &:hover {
+    [data-scheme="light"] & {
+      background-color: rgba(0, 0, 0, 0.04);
     }
+    [data-scheme="dark"] & {
+      background-color: rgba(255, 255, 255, 0.05);
+    }
+  }
+}
 
-    .navitemSubtitle {
-      font-size: 11px;
-      line-height: 1.5;
-      font-weight: 500;
+.navlistItem {
+  &[data-status="active"] {
+    color: var(--ig-palette-text-primary);
+    pointer-events: none;
+
+    [data-scheme="light"] & {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    [data-scheme="dark"] & {
+      background-color: rgba(255, 255, 255, 0.1);
     }
   }
 }
 
 .navlistGroup {
-  margin-top: 20px;
+  position: relative;
+  margin-top: 1.25rem;
   margin-bottom: 0px;
+  padding: 0.625rem 1rem;
   pointer-events: none;
+  line-height: normal;
 
   .navigation .navitem:first-child & {
     margin-top: 0;
   }
 
-  .navitemBody {
-    .navitemTitle {
-      color: var(--mantine-primary-color-filled);
-      text-transform: uppercase;
-      font-weight: 600;
-      font-size: 12px;
-      letter-spacing: 0.05em;
-    }
+  .navitemTitle {
+    color: var(--ig-palette-secondary-light);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
 
-    .navitemSubtitle {
-      color: var(--mantine-color-dimmed);
-      font-size: 11px;
-      letter-spacing: 0.06px;
+  .navitemSubtitle {
+    color: var(--ig-palette-text-disabled);
+    letter-spacing: 0.06px;
+  }
+}
+
+.navlistCollapse {
+  .collapseIconWrapper {
+    margin-inline: -0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & > svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+
+      transform: rotateZ(-90deg);
+      transition: transform var(--ig-transition-duration-shortest)
+        var(--ig-transition-easing-easeInOut);
+
+      [data-open="true"] & {
+        transform: rotateZ(0deg);
+      }
     }
   }
 }
@@ -78,7 +139,38 @@
     padding: 0;
   }
 }
-
 .navlistCollapseChildrenDense {
   padding-left: 0;
+}
+
+.navitemTitle,
+.navitemSubtitle,
+.collapseIconWrapper {
+  transition: opacity var(--ig-transition-duration-shortest) var(--ig-transition-easing-easeInOut);
+}
+
+[data-folded="true"] {
+  &:not([data-folded-opened="true"]) {
+    .navitemTitle,
+    .navitemSubtitle,
+    .collapseIconWrapper {
+      opacity: 0;
+    }
+
+    .navlistGroup::before {
+      content: "";
+      display: block;
+      position: absolute;
+      min-width: 1rem;
+      border-top: 2px solid;
+      opacity: 0.2;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .navlistCollapseChildren {
+      display: none;
+    }
+  }
 }

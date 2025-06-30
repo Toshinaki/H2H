@@ -68,9 +68,9 @@ export const UIConfigSchema = z.object({
 
 const SidebarStateSchema = z.object({
   opened: z.boolean(),
-  hiddenOpened: z.boolean(), // as drawer, when autohide is enabled
+  hiddenOpened: z.boolean(), // as drawer, when autohide is enabled & triggered
   folded: z.boolean(), // if breakpoint & under breakpoint, this is ignored
-  foldOpened: z.boolean().optional(), // maybe not used
+  foldedOpened: z.boolean().optional(), // maybe not used
 });
 
 export const UIStateSchema = z.object({

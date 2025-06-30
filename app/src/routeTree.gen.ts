@@ -13,6 +13,7 @@ import type { CreateFileRoute, FileRoutesByPath } from "@tanstack/react-router"
 import { Route as rootRouteImport } from "./routes/__root"
 import { Route as SettingsRouteImport } from "./routes/settings"
 import { Route as HistoryRouteImport } from "./routes/history"
+import { Route as DownloadRouteImport } from "./routes/download"
 import { Route as AboutRouteImport } from "./routes/about"
 import { Route as IndexRouteImport } from "./routes/index"
 
@@ -24,6 +25,11 @@ const SettingsRoute = SettingsRouteImport.update({
 const HistoryRoute = HistoryRouteImport.update({
   id: "/history",
   path: "/history",
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DownloadRoute = DownloadRouteImport.update({
+  id: "/download",
+  path: "/download",
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -40,12 +46,14 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute
   "/about": typeof AboutRoute
+  "/download": typeof DownloadRoute
   "/history": typeof HistoryRoute
   "/settings": typeof SettingsRoute
 }
 export interface FileRoutesByTo {
   "/": typeof IndexRoute
   "/about": typeof AboutRoute
+  "/download": typeof DownloadRoute
   "/history": typeof HistoryRoute
   "/settings": typeof SettingsRoute
 }
@@ -53,20 +61,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   "/": typeof IndexRoute
   "/about": typeof AboutRoute
+  "/download": typeof DownloadRoute
   "/history": typeof HistoryRoute
   "/settings": typeof SettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: "/" | "/about" | "/history" | "/settings"
+  fullPaths: "/" | "/about" | "/download" | "/history" | "/settings"
   fileRoutesByTo: FileRoutesByTo
-  to: "/" | "/about" | "/history" | "/settings"
-  id: "__root__" | "/" | "/about" | "/history" | "/settings"
+  to: "/" | "/about" | "/download" | "/history" | "/settings"
+  id: "__root__" | "/" | "/about" | "/download" | "/history" | "/settings"
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  DownloadRoute: typeof DownloadRoute
   HistoryRoute: typeof HistoryRoute
   SettingsRoute: typeof SettingsRoute
 }
@@ -85,6 +95,13 @@ declare module "@tanstack/react-router" {
       path: "/about"
       fullPath: "/about"
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    "/download": {
+      id: "/download"
+      path: "/download"
+      fullPath: "/download"
+      preLoaderRoute: typeof DownloadRouteImport
       parentRoute: typeof rootRouteImport
     }
     "/history": {
@@ -122,6 +139,15 @@ declare module "./routes/about" {
     FileRoutesByPath["/about"]["fullPath"]
   >
 }
+declare module "./routes/download" {
+  const createFileRoute: CreateFileRoute<
+    "/download",
+    FileRoutesByPath["/download"]["parentRoute"],
+    FileRoutesByPath["/download"]["id"],
+    FileRoutesByPath["/download"]["path"],
+    FileRoutesByPath["/download"]["fullPath"]
+  >
+}
 declare module "./routes/history" {
   const createFileRoute: CreateFileRoute<
     "/history",
@@ -144,6 +170,7 @@ declare module "./routes/settings" {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  DownloadRoute: DownloadRoute,
   HistoryRoute: HistoryRoute,
   SettingsRoute: SettingsRoute,
 }

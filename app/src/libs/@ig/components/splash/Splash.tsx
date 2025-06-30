@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTheme } from "@mui/material/styles";
 import { useTimeout } from "@ig/hooks";
 import _ from "@lodash";
 import { AnimatePresence, motion, type Variants } from "motion/react";
@@ -42,6 +43,8 @@ const Splash = ({
     }
   }, [animationEnded, show]);
 
+  const theme = useTheme();
+
   return (
     <Portal>
       <AnimatePresence>
@@ -52,6 +55,11 @@ const Splash = ({
             exit="hidden"
             variants={_.merge({}, defaultAnimation, animation)}
             className={styles.root}
+            style={{
+              zIndex: theme.zIndex.snackbar,
+              backgroundColor: theme.palette.primary.main,
+              color: theme.palette.primary.contrastText,
+            }}
           >
             <div />
 

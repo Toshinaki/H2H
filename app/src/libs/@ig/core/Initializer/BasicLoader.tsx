@@ -1,8 +1,9 @@
 import { useAppStore } from "store";
+import { useShallow } from "zustand/react/shallow";
+import { useShallowEffect } from "@ig/hooks";
 // import { openErrorModal } from "@ig/core/error-handling";
 import logger from "@ig/utils/logger";
 import type { InitAction } from "store/core/types";
-import { useEffect } from "react";
 
 export interface BasicLoaderProps<T> {
   action: string;
@@ -19,19 +20,23 @@ const BasicLoader = <T,>({
   onSuccess,
   depends,
 }: BasicLoaderProps<T>) => {
-  const [setAction, loaderAction, isReady] = useAppStore((state) => [
-    state.init.setAction,
-    state.init[action] as InitAction | undefined,
-    (depends || []).map((d) => !!(state.init[d] as InitAction | undefined)?.success).every(Boolean),
-  ]);
+  const [setAction, loaderAction, isReady] = useAppStore(
+    useShallow((state) => [
+      state.init.setAction,
+      state.init[action] as InitAction | undefined,
+      (depends || [])
+        .map((d) => !!(state.init[d] as InitAction | undefined)?.success)
+        .every(Boolean),
+    ]),
+  );
 
-  useEffect(() => {
+  useShallowEffect(() => {
     if (isReady && !loaderAction) {
       setAction(action, { type: "loader" });
     }
   }, [action, isReady, loaderAction, setAction]);
 
-  useEffect(() => {
+  useShallowEffect(() => {
     if (loaderAction?.type && loaderAction.state !== "done") {
       setAction(action, { state: "inProgress" });
 

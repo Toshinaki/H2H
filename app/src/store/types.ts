@@ -1,5 +1,12 @@
 import type { StateCreator } from "zustand";
-import type { AuthSlice, ConfigSlice, ConfigState, InitSlice, UISlice } from "store/core/types";
+import type {
+  AuthSlice,
+  AuthState,
+  ConfigSlice,
+  ConfigState,
+  InitSlice,
+  UISlice,
+} from "store/core/types";
 
 export interface AppState {
   init: InitSlice;
@@ -19,6 +26,6 @@ export type StateSlice<T> = StateCreator<
 
 export interface PersistedState {
   config: ConfigState;
-  //   auth: AuthState;
+  auth: Pick<AuthState, "user">;
   //   navigation: NavigationState;
 }

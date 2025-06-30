@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from "@mui/material/styles";
 import { useMergeRefs } from "@ig/hooks";
 import { rem } from "@ig/utils/rem";
 import Box, { type BoxProps } from "@mui/material/Box";
@@ -109,6 +110,8 @@ export const ScrollArea = ({ ref, ...props }: ScrollAreaProps) => {
     return () => observer.disconnect();
   }, [localViewportRef, offsetScrollbars]);
 
+  const theme = useTheme();
+
   return (
     <ScrollAreaRoot
       ref={ref}
@@ -120,6 +123,13 @@ export const ScrollArea = ({ ref, ...props }: ScrollAreaProps) => {
         {
           "--scrollarea-scrollbar-size": rem(scrollbarSize),
           "--scrollarea-over-scroll-behavior": overscrollBehavior,
+
+          "--scrollbar-bg":
+            theme.palette.mode === "dark" ? theme.palette.grey[900] : theme.palette.grey[50],
+          "--scrollbar-thumb":
+            theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.4)" : "rgba(0, 0, 0, 0.4)",
+          "--scrollbar-thumb-hover":
+            theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)",
           ...rest.style,
         } as React.CSSProperties
       }

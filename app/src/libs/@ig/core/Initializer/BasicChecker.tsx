@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppStore } from "store";
+import { useShallow } from "zustand/react/shallow";
 // TODO
 // import { openErrorModal } from "@ig/core/error-handling";
 import logger from "@ig/utils/logger";
@@ -28,11 +29,13 @@ const BasicChecker = ({
   maxTrial = 10,
   onFail,
 }: BasicCheckerProps) => {
-  const [setAction, checkerAction, isReady] = useAppStore((state) => [
-    state.init.setAction,
-    state.init[action] as InitAction | undefined,
-    depends.map((d) => !!(state.init[d] as InitAction | undefined)?.success).every(Boolean),
-  ]);
+  const [setAction, checkerAction, isReady] = useAppStore(
+    useShallow((state) => [
+      state.init.setAction,
+      state.init[action] as InitAction | undefined,
+      depends.map((d) => !!(state.init[d] as InitAction | undefined)?.success).every(Boolean),
+    ]),
+  );
 
   const [attemptCount, setAttemptCount] = useState(0);
 

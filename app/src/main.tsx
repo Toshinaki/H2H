@@ -2,6 +2,8 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import App from "@ig/core/App";
+import loaders from "./app/components/init/loaders";
+import { loaderActions } from "configs/init.config";
 
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
@@ -25,7 +27,7 @@ if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <App>
+      <App loaders={loaders} loaderActions={loaderActions}>
         <RouterProvider router={router} />
       </App>
     </StrictMode>,

@@ -4,10 +4,10 @@ import { Navigation } from "./Navigation";
 import type { NavigationProps } from "../types";
 
 import { registerComponent } from "../utils";
-import NavCollapseComponent from "./components/NavCollapseComponent";
-import NavGroupComponent from "./components/NavGroupComponent";
-import NavItemComponent from "./components/NavItemComponent";
-import NavLinkComponent from "./components/NavLinkComponent";
+import NavCollapseComponent from "./items/NavCollapseComponent";
+import NavGroupComponent from "./items/NavGroupComponent";
+import NavItemComponent from "./items/NavItemComponent";
+import NavLinkComponent from "./items/NavLinkComponent";
 
 // console.log("StandardNavigation");
 

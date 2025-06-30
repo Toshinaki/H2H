@@ -12,8 +12,6 @@ const NavGroupComponent = (props: NavigationItemComponentProps) => {
   const { onItemClick, nestedLevel, showTooltip } = props;
   const item = props.item as NavGroup;
 
-  // const icon = item.Icon ? <item.Icon className={styles.navitemIcon} /> : undefined;
-
   const label = t(`${item.id}.name`, { defaultValue: item.name || "" });
   const description = t(`${item.id}.description`, { defaultValue: item.description || "" });
 

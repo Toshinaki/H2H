@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import _ from "@lodash";
 import Collapse from "@mui/material/Collapse";
-import IconButton from "@mui/material/IconButton";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -24,19 +23,19 @@ const NavCollapseComponent = (props: NavigationItemComponentProps) => {
 
   const label = t(`${item.id}.name`, { defaultValue: item.name || "" });
 
+  const itemPadding = nestedLevel > 0 ? 2.8 + nestedLevel : 1.2;
+
   return (
     <>
       <Tooltip title={props.showTooltip && label} placement="right">
-        <ListItem
-          secondaryAction={
-            <IconButton onClick={() => setOpen((curr) => !curr)}>
-              <ExpandMore />
-            </IconButton>
-          }
-          className={styles.navitem}
-        >
-          <ListItemButton disabled={item.disabled} className={styles.navlistCollapse}>
-            {icon && <ListItemIcon className={styles.navitemSection}>{icon}</ListItemIcon>}
+        <ListItem data-open={open} className={styles.navitem}>
+          <ListItemButton
+            onClick={() => setOpen((curr) => !curr)}
+            disabled={item.disabled}
+            className={styles.navlistCollapse}
+            style={{ paddingLeft: `${itemPadding > 8 ? 8 : itemPadding}rem` }}
+          >
+            {icon && <ListItemIcon className={styles.navitemIcon}>{icon}</ListItemIcon>}
 
             <ListItemText
               primary={label}
@@ -48,13 +47,14 @@ const NavCollapseComponent = (props: NavigationItemComponentProps) => {
               }}
             />
 
-            {/* TODO */}
-            {/* {item.badge} */}
+            <div className={styles.collapseIconWrapper}>
+              <ExpandMore />
+            </div>
           </ListItemButton>
         </ListItem>
       </Tooltip>
 
-      <Collapse in={open}>
+      <Collapse in={open} component="li" className={styles.navlistCollapseChildren}>
         <Navigation
           navigations={item.items}
           onItemClick={onItemClick}

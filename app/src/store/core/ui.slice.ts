@@ -23,66 +23,96 @@ export const createUISlice: StateSlice<UISlice> = (set) => {
     ...DEFAULT_UI_STATE,
 
     setUIState: (uiState) =>
-      set((state) => {
-        const newState: UISlice = _.merge(
-          {},
-          state.ui,
-          _.pick(state.auth.user.preference, [
-            "ui.layout.leftSidebar.opened",
-            "ui.layout.leftSidebar.folded",
-            "ui.layout.rightSidebar.opened",
-            "ui.layout.rightSidebar.folded",
-          ]).ui,
-          uiState,
-        );
-        if (!_.isEqual(newState, state.ui)) {
-          state.ui = newState;
-        }
-      }),
-
-    toggleSidebarOpen: (position = "left", open = undefined) =>
       set(
         (state) => {
-          if (position === "right") {
-            state.ui.layout.rightSidebar.opened =
-              open === undefined ? !state.ui.layout.rightSidebar.opened : open;
-          } else {
-            state.ui.layout.leftSidebar.opened =
-              open === undefined ? !state.ui.layout.leftSidebar.opened : open;
+          const newState: UISlice = _.merge(
+            {},
+            state.ui,
+            _.pick(state.auth.user.preference, [
+              "ui.layout.leftSidebar.opened",
+              "ui.layout.leftSidebar.folded",
+              "ui.layout.rightSidebar.opened",
+              "ui.layout.rightSidebar.folded",
+            ]).ui,
+            uiState,
+          );
+          if (!_.isEqual(newState, state.ui)) {
+            state.ui = newState;
           }
         },
         undefined,
-        { type: `ui/toggle-${position}-sidebar` },
+        { type: "ui/set-ui-state", data: { uiState } },
+      ),
+
+    toggleSidebarOpen: (position = "left", open = undefined, shouldUpdateUser = false) =>
+      set(
+        (state) => {
+          if (shouldUpdateUser) {
+            state.auth.user.preference = _.merge({}, state.auth.user.preference, {
+              ui: {
+                layout: {
+                  [`${position}Sidebar`]: {
+                    opened:
+                      open === undefined
+                        ? !(
+                            state.auth.user.preference.ui?.layout?.[`${position}Sidebar`]?.opened ??
+                            state.ui.layout[`${position}Sidebar`].opened
+                          )
+                        : open,
+                  },
+                },
+              },
+            });
+          }
+          state.ui.layout[`${position}Sidebar`].opened =
+            open === undefined ? !state.ui.layout[`${position}Sidebar`].opened : open;
+        },
+        undefined,
+        { type: `ui/toggle-${position}-sidebar`, data: { open, shouldUpdateUser } },
       ),
 
     toggleSidebarHiddenOpen: (position = "left", open = undefined) =>
       set(
         (state) => {
-          if (position === "right") {
-            state.ui.layout.rightSidebar.hiddenOpened =
-              open === undefined ? !state.ui.layout.rightSidebar.hiddenOpened : open;
-          } else {
-            state.ui.layout.leftSidebar.hiddenOpened =
-              open === undefined ? !state.ui.layout.leftSidebar.hiddenOpened : open;
-          }
+          state.ui.layout[`${position}Sidebar`].hiddenOpened =
+            open === undefined ? !state.ui.layout[`${position}Sidebar`].hiddenOpened : open;
         },
         undefined,
         { type: `ui/toggle-hidden-${position}-sidebar` },
       ),
 
-    toggleSidebarFold: (position = "left", fold = undefined) =>
+    toggleSidebarFold: (position = "left", fold = undefined, shouldUpdateUser = false) =>
       set(
         (state) => {
-          if (position === "right") {
-            state.ui.layout.rightSidebar.folded =
-              fold === undefined ? !state.ui.layout.rightSidebar.folded : fold;
-          } else {
-            state.ui.layout.leftSidebar.folded =
-              fold === undefined ? !state.ui.layout.leftSidebar.folded : fold;
+          if (shouldUpdateUser) {
+            state.auth.user.preference = _.merge({}, state.auth.user.preference, {
+              ui: {
+                layout: {
+                  [`${position}Sidebar`]: {
+                    folded:
+                      fold === undefined
+                        ? !state.auth.user.preference.ui?.layout?.[`${position}Sidebar`]?.folded
+                        : fold,
+                  },
+                },
+              },
+            });
           }
+          state.ui.layout[`${position}Sidebar`].folded =
+            fold === undefined ? !state.ui.layout[`${position}Sidebar`].folded : fold;
         },
         undefined,
-        { type: `ui/toggle-${position}-sidebar-folded` },
+        { type: `ui/toggle-${position}-sidebar-folded`, data: { fold, shouldUpdateUser } },
+      ),
+
+    toggleSidebarFoldedOpen: (position = "left", open = undefined) =>
+      set(
+        (state) => {
+          state.ui.layout[`${position}Sidebar`].foldedOpened =
+            open === undefined ? !state.ui.layout[`${position}Sidebar`].foldedOpened : open;
+        },
+        undefined,
+        { type: `ui/toggle-folded-${position}-sidebar` },
       ),
 
     reset: () =>

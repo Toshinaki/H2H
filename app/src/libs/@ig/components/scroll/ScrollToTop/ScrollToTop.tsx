@@ -28,7 +28,7 @@ const ScrollToTop = ({ show, ...props }: ScrollToTopProps) => {
       <motion.div initial="initial" animate="initial" whileHover="hover" className={styles.wrapper}>
         <Fab variant="extended" size="small" {...props} className={styles.button}>
           <motion.div variants={hoverAnimation} className={styles.iconWrapper}>
-            <RocketLaunchIcon className={styles.icon} />
+            <RocketLaunchIcon color="primary" className={styles.icon} />
           </motion.div>
 
           {t("action.scrollTop")}

@@ -15,6 +15,9 @@ const NavLinkComponent = (props: NavigationItemComponentProps) => {
 
   const label = t(`${item.id}.name`, { defaultValue: item.name || "" });
 
+  const { nestedLevel = 0 } = props;
+  const itemPadding = nestedLevel > 0 ? 2.8 + nestedLevel : 1.2;
+
   return (
     <Tooltip title={props.showTooltip && label} placement="right">
       <ListItem onClick={(e) => props.onItemClick?.(item, e)} className={styles.navitem}>
@@ -23,8 +26,11 @@ const NavLinkComponent = (props: NavigationItemComponentProps) => {
           target="_blank"
           disabled={item.disabled}
           className={styles.navlistLink}
+          style={{ paddingLeft: `${itemPadding > 8 ? 8 : itemPadding}rem` }}
         >
-          {icon && <ListItemIcon className={styles.navitemSection}>{icon}</ListItemIcon>}
+          {nestedLevel === 0 && icon && (
+            <ListItemIcon className={styles.navitemIcon}>{icon}</ListItemIcon>
+          )}
 
           <ListItemText
             primary={label}

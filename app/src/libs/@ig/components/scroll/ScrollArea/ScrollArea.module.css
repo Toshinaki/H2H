@@ -69,20 +69,10 @@
   flex-direction: row;
 
   &:hover {
-    [data-scheme="light"] & {
-      background-color: var(--mantine-color-gray-0);
+    background-color: var(--scrollbar-bg);
 
-      & > .thumb {
-        background-color: rgba(0, 0, 0, 0.5);
-      }
-    }
-
-    [data-scheme="dark"] & {
-      background-color: var(--mantine-color-dark-8);
-
-      & > .thumb {
-        background-color: rgba(255, 255, 255, 0.5);
-      }
+    & > .thumb {
+      background-color: var(--scrollbar-thumb-hover);
     }
   }
 
@@ -113,6 +103,7 @@
   transition: background-color 150ms ease;
   overflow: hidden;
   opacity: var(--thumb-opacity);
+  background-color: var(--scrollbar-thumb);
 
   &::before {
     content: "";
@@ -125,14 +116,6 @@
     min-width: 44px;
     min-height: 44px;
   }
-
-  [data-scheme="light"] & {
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-
-  [data-scheme="dark"] & {
-    background-color: rgba(255, 255, 255, 0.4);
-  }
 }
 
 .corner {
@@ -142,14 +125,7 @@
   display: block;
   inset-inline-end: 0;
   bottom: 0;
-
-  [data-scheme="light"] & {
-    background-color: var(--mantine-color-gray-0);
-  }
-
-  [data-scheme="dark"] & {
-    background-color: var(--mantine-color-dark-8);
-  }
+  background-color: var(--scrollbar-bg);
 
   &:where([data-hovered]) {
     opacity: 1;

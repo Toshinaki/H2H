@@ -1,108 +1,148 @@
-import { useAppStore } from "store";
-import { createTheme, ThemeProvider, type Theme } from "@mui/material/styles";
-import { useShallow } from "zustand/react/shallow";
-import { useSmallerThan } from "@ig/hooks";
-import getTheme from "@ig/utils/getTheme";
-import Box from "@mui/material/Box";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import Drawer from "@mui/material/Drawer";
 import { useEffect } from "react";
-import _ from "lodash";
-import { THEMES } from "@ig/configs";
+import { useShallow } from "zustand/react/shallow";
+import { useAppStore } from "store";
+import { useShouldSidebarClose, useShouldSidebarFold } from "./hooks";
+import clsx from "clsx";
+import _ from "@lodash";
+import getTheme from "@ig/utils/getTheme";
+import { ThemeProvider } from "@mui/material/styles";
+import Drawer, { type DrawerProps } from "@mui/material/Drawer";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import styles from "./Layout.module.css";
 
-interface LayoutSidebarProps {
+export interface LayoutSidebarProps
+  extends Omit<
+    DrawerProps,
+    "variant" | "anchor" | "open" | "onOpen" | "onClose" | "onMouseEnter" | "onMouseLeave"
+  > {
   position: "left" | "right";
 }
 
-const LayoutSidebar = ({ position, children }: React.PropsWithChildren<LayoutSidebarProps>) => {
+const LayoutSidebar = ({ position, children, className, ...props }: LayoutSidebarProps) => {
   const [
     { layout: layoutConfig, radius: defaultRadius },
-    { layout: layoutState, toggleSidebarHiddenOpen, toggleSidebarOpen },
-  ] = useAppStore(useShallow((state) => [state.config.current.ui, state.ui]));
+    {
+      layout: layoutState,
+      toggleSidebarHiddenOpen,
+      toggleSidebarOpen,
+      toggleSidebarFold,
+      toggleSidebarFoldedOpen,
+    },
+    userPreferFold,
+  ] = useAppStore(
+    useShallow((state) => [
+      state.config.current.ui,
+      state.ui,
+      state.auth.user.preference.ui?.layout?.[`${position}Sidebar`]?.folded,
+    ]),
+  );
   const {
     autohide,
     fold,
-    size,
+    // size,
     radius,
-    offset,
+    // offset,
     theme: themeId,
-  } = position === "right" ? layoutConfig.rightSidebar : layoutConfig.leftSidebar;
-  const { opened, hiddenOpened, folded, foldOpened } =
-    position === "right" ? layoutState.rightSidebar : layoutState.leftSidebar;
+    darkmode,
+  } = layoutConfig[`${position}Sidebar`];
+  const { opened, hiddenOpened, folded, foldedOpened } = layoutState[`${position}Sidebar`];
 
-  const content = (
-    <Box component="aside" data-fold-opened={foldOpened} sx={{}}>
-      {children}
-    </Box>
-  );
-
-  const isSmallScreen = useSmallerThan(autohide.breakpoint);
-  const shouldFold = useSmallerThan(fold.breakpoint || 0);
-
+  const shouldAutoClose = useShouldSidebarClose(position);
+  const shouldAutoFold = useShouldSidebarFold(position);
   useEffect(() => {
-    if (isSmallScreen) {
+    if (shouldAutoClose) {
       toggleSidebarHiddenOpen(position, false);
     }
-  }, [isSmallScreen, position, toggleSidebarHiddenOpen]);
+  }, [shouldAutoClose, position, toggleSidebarHiddenOpen]);
+  useEffect(() => {
+    if (fold.enabled) {
+      if (shouldAutoFold && !folded) {
+        toggleSidebarFold(position, true);
+        toggleSidebarFoldedOpen(position, false);
+      }
+      if (!shouldAutoFold && folded && !userPreferFold) {
+        toggleSidebarFold(position, false);
+      }
+    }
+  }, [
+    fold.enabled,
+    folded,
+    position,
+    shouldAutoFold,
+    userPreferFold,
+    toggleSidebarFold,
+    toggleSidebarFoldedOpen,
+  ]);
+  const sidebarFolded = fold.enabled && folded;
 
   const id = `${position}-sidebar`;
-
   const theme = getTheme({
     id: themeId,
-    cssVarPrefix: "ig",
-    rootSelector: `#${id}`,
+    cssVariables: { cssVarPrefix: "ig", rootSelector: `#${id}` },
   });
-  console.log({ theme });
 
-  const width = `${(((fold.enabled && folded) || shouldFold) && fold.size) || size}px`;
+  const sidebarFoldedClosed = sidebarFolded && !layoutState[`${position}Sidebar`].foldedOpened;
+  const contentWidth = `calc(${
+    sidebarFoldedClosed
+      ? layoutConfig[`${position}Sidebar`].fold.size
+      : layoutConfig[`${position}Sidebar`].size
+  }px - ${layoutConfig[`${position}Sidebar`].offset}px)`;
 
   return (
-    <ThemeProvider
-      theme={(theme: Theme) => {
-        const { vars, ...rest } = theme;
-        console.log({ vars });
-        return createTheme(_.merge({}, rest, THEMES[themeId], { cssVariables: true }));
-      }}
-    >
-      {autohide.enabled && isSmallScreen && (
+    <ThemeProvider theme={theme}>
+      {autohide.enabled && shouldAutoClose && (
         <SwipeableDrawer
           id={id}
+          data-scheme={darkmode ? "dark" : "light"}
           anchor={position}
           open={hiddenOpened}
           onClose={() => toggleSidebarHiddenOpen(position)}
           onOpen={() => toggleSidebarHiddenOpen(position)}
           disableSwipeToOpen
+          {...props}
         >
-          {content}
+          {children}
         </SwipeableDrawer>
       )}
 
-      {(!autohide.enabled || !isSmallScreen) && (
+      {(!autohide.enabled || !shouldAutoClose) && (
         <Drawer
           id={id}
+          component="aside"
+          data-scheme={darkmode ? "dark" : "light"}
+          data-folded={sidebarFolded}
+          data-folded-opened={!!foldedOpened}
           variant="persistent"
           anchor={position}
           open={opened}
           onClose={() => toggleSidebarOpen(position)}
-          sx={{
-            width,
-            height: "100%",
+          onMouseEnter={sidebarFolded ? () => toggleSidebarFoldedOpen(position, true) : undefined}
+          onMouseLeave={sidebarFolded ? () => toggleSidebarFoldedOpen(position, false) : undefined}
+          {...props}
+          className={clsx(styles.sidebar, className)}
+          style={{
+            width: `var(--${position}-sidebar-wrapper-width)`,
             borderRadius: radius ?? defaultRadius,
-            transition: (theme) => theme.transitions.create("width"),
+            ...props.style,
           }}
-          slotProps={{
-            paper: {
-              sx: {
-                width: `calc(${width} - ${offset}px)`,
-                height: `calc(100% - ${offset * 2}px)`,
-                margin: `${offset}px`,
-                ...(position === "right" ? { marginLeft: 0 } : { marginRight: 0 }),
-                transition: (theme) => theme.transitions.create("width"),
+          slotProps={_.merge(
+            {},
+            {
+              paper: {
+                elevation: 3,
+                className: styles.sidebarWrapper,
+                style: {
+                  width: contentWidth,
+                  height: `calc(100% - ${layoutConfig[`${position}Sidebar`].offset * 2}px)`,
+                  margin: `${layoutConfig[`${position}Sidebar`].offset}px`,
+                  ...(position === "right" ? { marginLeft: 0 } : { marginRight: 0 }),
+                } as React.CSSProperties,
               },
             },
-          }}
+            props.slotProps,
+          )}
         >
-          {content}
+          {children}
         </Drawer>
       )}
     </ThemeProvider>

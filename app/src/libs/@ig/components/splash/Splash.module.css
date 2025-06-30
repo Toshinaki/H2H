@@ -1,12 +1,9 @@
 .root {
   position: absolute;
-  z-index: var(--mui-zIndex-snackbar);
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: var(--mui-palette-primary-main);
-  color: var(--mui-palette-primary-contrastText);
   display: grid;
   grid-template-rows: repeat(3, 1fr);
 }

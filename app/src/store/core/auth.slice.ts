@@ -10,47 +10,48 @@ const initState: AuthState = {
 export const createAuthSlice: StateSlice<AuthSlice> = (set, get) => ({
   ...initState,
 
-  setUser: (user) => {
-    const {
-      config: { setConfig },
-      ui: { setUIState },
-    } = get();
-    if (user.preference.app) {
-      setConfig({ app: user.preference.app });
-    }
-    if (user.preference.ui) {
-      setConfig({
-        ui: _.omit(user.preference.ui, [
-          "layout.leftSidebar.opened",
-          "layout.leftSidebar.folded",
-          "layout.rightSidebar.opened",
-          "layout.rightSidebar.folded",
-        ]),
-      });
-      setUIState(
-        _.pick(user.preference.ui, [
-          "layout.leftSidebar.opened",
-          "layout.leftSidebar.folded",
-          "layout.rightSidebar.opened",
-          "layout.rightSidebar.folded",
-        ]),
-      );
-    }
-
-    return set(
+  setUser: (user) =>
+    set(
       (state) => {
-        state.auth.user = user;
+        const newUser = _.merge({}, state.auth.user, user);
+        const {
+          config: { setConfig },
+        } = state;
+        if (newUser.preference.app) {
+          setConfig({ app: newUser.preference.app });
+        }
+        if (newUser.preference.ui) {
+          setConfig({
+            ui: _.omit(newUser.preference.ui, [
+              "layout.leftSidebar.opened",
+              "layout.leftSidebar.folded",
+              "layout.rightSidebar.opened",
+              "layout.rightSidebar.folded",
+            ]),
+          });
+          state.ui.layout = _.merge(
+            {},
+            state.ui.layout,
+            _.pick(newUser.preference.ui.layout, [
+              "leftSidebar.opened",
+              "leftSidebar.folded",
+              "rightSidebar.opened",
+              "rightSidebar.folded",
+            ]),
+          );
+        }
+
+        state.auth.user = newUser;
       },
       undefined,
       { type: "auth/set-user", data: { user } },
-    );
-  },
+    ),
 
   updateUser: (user) => {
     if (user) {
       const {
         config: { setConfig },
-        ui: { setUIState },
+        // ui: { setUIState },
       } = get();
       if (user?.preference?.app) {
         setConfig({ app: user.preference.app });
@@ -64,14 +65,14 @@ export const createAuthSlice: StateSlice<AuthSlice> = (set, get) => ({
             "layout.rightSidebar.folded",
           ]),
         });
-        setUIState(
-          _.pick(user.preference.ui, [
-            "layout.leftSidebar.opened",
-            "layout.leftSidebar.folded",
-            "layout.rightSidebar.opened",
-            "layout.rightSidebar.folded",
-          ]),
-        );
+        // setUIState(
+        //   _.pick(user.preference.ui, [
+        //     "layout.leftSidebar.opened",
+        //     "layout.leftSidebar.folded",
+        //     "layout.rightSidebar.opened",
+        //     "layout.rightSidebar.folded",
+        //   ]),
+        // );
       }
 
       return set(

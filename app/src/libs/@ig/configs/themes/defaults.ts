@@ -1,7 +1,7 @@
-import type { createTheme } from "@mui/material/styles";
+import { alpha, type createTheme, type Theme } from "@mui/material/styles";
 import type { PartialDeep } from "type-fest";
 
-export const defaultThemeOptions = {
+export const defaultThemeOptions: PartialDeep<Theme> = {
   typography: {
     fontFamily: ["Inter var", "Roboto", '"Helvetica"', "Arial", "sans-serif"].join(","),
     fontWeightLight: 300,
@@ -22,18 +22,21 @@ export const defaultThemeOptions = {
       defaultProps: {},
       styleOverrides: {
         root: {},
-        sizeSmall: {
-          width: 16,
-          height: 16,
-        },
-        sizeMedium: {
-          width: 20,
-          height: 20,
-        },
-        sizeLarge: {
-          width: 24,
-          height: 24,
-        },
+        fontSizeSmall: 16,
+        fontSizeMedium: 20,
+        fontSizeLarge: 24,
+        // sizeSmall: {
+        //   width: 16,
+        //   height: 16,
+        // },
+        // sizeMedium: {
+        //   width: 20,
+        //   height: 20,
+        // },
+        // sizeLarge: {
+        //   width: 24,
+        //   height: 24,
+        // },
       },
     },
     MuiAppBar: {
@@ -46,13 +49,13 @@ export const defaultThemeOptions = {
         },
       },
     },
-    MuiPickersPopper: {
-      styleOverrides: {
-        root: {
-          zIndex: 99999,
-        },
-      },
-    },
+    // MuiPickersPopper: {
+    //   styleOverrides: {
+    //     root: {
+    //       zIndex: 99999,
+    //     },
+    //   },
+    // },
     MuiAutocomplete: {
       styleOverrides: {
         popper: {
@@ -65,14 +68,24 @@ export const defaultThemeOptions = {
         // disableRipple: true
       },
       styleOverrides: {
-        root: {},
+        root: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
+        }),
       },
     },
     MuiIconButton: {
       styleOverrides: {
-        root: {
-          borderRadius: 8,
-        },
+        root: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
+          color: alpha(theme.palette.text.primary, 0.7),
+          transition: theme.transitions.create(["color", "background-color"], {
+            duration: theme.transitions.duration.shortest,
+          }),
+
+          "&:hover": {
+            color: theme.palette.text.primary,
+          },
+        }),
         sizeMedium: {
           width: 36,
           height: 36,
@@ -115,24 +128,24 @@ export const defaultThemeOptions = {
           textTransform: "none",
           // lineHeight: 1,
         },
-        sizeMedium: {
-          borderRadius: 8,
+        sizeMedium: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
           height: 36,
           minHeight: 36,
           maxHeight: 36,
-        },
-        sizeSmall: {
-          borderRadius: 8,
+        }),
+        sizeSmall: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
           height: 32,
           minHeight: 32,
           maxHeight: 32,
-        },
-        sizeLarge: {
+        }),
+        sizeLarge: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
           height: 40,
           minHeight: 40,
           maxHeight: 40,
-          borderRadius: 8,
-        },
+        }),
         contained: {
           boxShadow: "none",
           "&:hover, &:focus": {
@@ -146,9 +159,9 @@ export const defaultThemeOptions = {
         color: "secondary",
       },
       styleOverrides: {
-        contained: {
-          borderRadius: 8,
-        },
+        contained: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
+        }),
       },
     },
     MuiTab: {
@@ -165,9 +178,9 @@ export const defaultThemeOptions = {
     },
     MuiDialog: {
       styleOverrides: {
-        paper: {
-          borderRadius: 12,
-        },
+        paper: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
+        }),
       },
     },
     MuiPaper: {
@@ -175,9 +188,9 @@ export const defaultThemeOptions = {
         root: {
           backgroundImage: "none",
         },
-        rounded: {
-          borderRadius: 12,
-        },
+        rounded: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
+        }),
       },
     },
     MuiCard: {
@@ -185,9 +198,9 @@ export const defaultThemeOptions = {
     },
     MuiPopover: {
       styleOverrides: {
-        paper: {
-          borderRadius: 8,
-        },
+        paper: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
+        }),
       },
     },
     MuiTextField: {
@@ -240,36 +253,35 @@ export const defaultThemeOptions = {
     },
     MuiInputBase: {
       styleOverrides: {
-        root: {
-          // height: 36,
+        root: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
           minHeight: 36,
-          borderRadius: 8,
           lineHeight: 1,
-        },
-        legend: {
-          fontSize: "0.75em",
-        },
+        }),
+        // legend: {
+        //   fontSize: "0.75em",
+        // },
         input: {
           padding: "5px 11px",
         },
         adornedStart: {
           paddingLeft: "11px!important",
         },
-        sizeSmall: {
+        sizeSmall: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
           height: 32,
           minHeight: 32,
-          borderRadius: 8,
-        },
-        sizeMedium: {
-          height: 36,
-          minHeight: 36,
-          borderRadius: 8,
-        },
-        sizeLarge: {
-          height: 40,
-          minHeight: 40,
-          borderRadius: 8,
-        },
+        }),
+        // sizeMedium: {
+        //   height: 36,
+        //   minHeight: 36,
+        //   borderRadius: 8,
+        // },
+        // sizeLarge: {
+        //   height: 40,
+        //   minHeight: 40,
+        //   borderRadius: 8,
+        // },
       },
     },
     MuiOutlinedInput: {
@@ -287,12 +299,12 @@ export const defaultThemeOptions = {
     },
     MuiFilledInput: {
       styleOverrides: {
-        root: {
-          borderRadius: 8,
+        root: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
           "&:before, &:after": {
             display: "none",
           },
-        },
+        }),
 
         input: {
           padding: "5px 11px",
@@ -329,6 +341,13 @@ export const defaultThemeOptions = {
         },
       ],
     },
+    MuiListItemSecondaryAction: {
+      styleOverrides: {
+        root: {
+          pointerEvents: "none",
+        },
+      },
+    },
   },
 };
 
@@ -346,5 +365,4 @@ export const mustHaveThemeOptions: PartialDeep<Parameters<typeof createTheme>[0]
       fontSize: "1.3rem",
     },
   },
-  cssVariables: true,
 };

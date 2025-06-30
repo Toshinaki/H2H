@@ -1,5 +1,4 @@
 import { useAppStore } from "store";
-import { useShallow } from "zustand/react/shallow";
 import { useShallowEffect } from "@ig/hooks/useShallowEffect";
 import type { InitAction } from "store/core/types";
 
@@ -12,7 +11,7 @@ export interface InitializerProps {
 
 const Initializer = ({ loaders, checkers, loaderActions, checkerActions }: InitializerProps) => {
   const { status, setStatus, setSuccess, setActions, actions, ...init } = useAppStore(
-    useShallow((state) => state.init),
+    (state) => state.init,
   );
   const initActions = actions.map(
     (action) => init[action] as Omit<InitAction, "action" | "enabled"> | undefined,

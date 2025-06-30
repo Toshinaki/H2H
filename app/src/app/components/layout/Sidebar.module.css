@@ -1,0 +1,59 @@
+.sidebarHeader {
+  height: var(--navbar-header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.sidebarFooter {
+  padding: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+
+  .settingsButton {
+    &[data-status="active"] {
+      pointer-events: none;
+
+      [data-scheme="light"] & {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+      [data-scheme="dark"] & {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    &[data-status="active"] {
+      .settingsIcon {
+        color: var(--ig-palette-text-primary);
+      }
+    }
+  }
+}
+
+.toggleButton {
+  &[data-closed="true"] {
+    position: fixed;
+    left: -0.5rem;
+    bottom: 0.7rem;
+    color: var(--root-palette-text-disabled, var(--ig-palette-text-disabled));
+    transition: all var(--ig-transition-duration-shortest) var(--ig-transition-easing-easeInOut);
+
+    &:hover {
+      color: var(--root-palette-text-primary, var(--ig-palette-text-disabled));
+      [data-scheme="light"] & {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+      [data-scheme="dark"] & {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    &:hover {
+      left: 0;
+    }
+  }
+}
