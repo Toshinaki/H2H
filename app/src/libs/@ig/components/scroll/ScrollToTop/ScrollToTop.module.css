@@ -1,5 +1,8 @@
 .wrapper {
-  position: relative;
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  z-index: 10;
   display: inline-block;
 }
 

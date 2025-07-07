@@ -1,11 +1,11 @@
 {
 	"biome.requireConfiguration": true,
 	"biome.lsp.trace.server": "verbose",
-	"biome.lsp.bin": {
+	"biome.lsp.bin": {		
 		"linux-x64": "/path/to/biome",
 		"linux-arm64-musl": "/path/to/biome",
 		"darwin-arm64": "/path/to/biome",
-		"win32-x64": "app/node_modules/.pnpm/@biomejs+biome@1.9.4/node_modules/@biomejs/cli-win32-x64/biome.exe"
+		"win32-x64": "app/node_modules/.pnpm/@biomejs+biome@2.0.0/node_modules/@biomejs/cli-win32-x64/biome.exe"
 	},
 	"editor.formatOnSave": true,
 	"js/ts.hover.maximumLength": 500000,
@@ -18,5 +18,8 @@
 	},
 	"search.exclude": {
 		"**/routeTree.gen.ts": true
-	}
+	},
+	"rust-analyzer.linkedProjects": [
+		"./app/src-tauri/Cargo.toml"
+	]
 }

@@ -39,6 +39,7 @@
     position: fixed;
     left: -0.5rem;
     bottom: 0.7rem;
+    z-index: 11;
     color: var(--root-palette-text-disabled, var(--ig-palette-text-disabled));
     transition: all var(--ig-transition-duration-shortest) var(--ig-transition-easing-easeInOut);
 

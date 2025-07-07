@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/correctness/useExhaustiveDependencies: copied from souce */
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { useMergeRefs } from "@ig/hooks";
@@ -8,6 +9,7 @@ import { ScrollAreaRoot } from "./ScrollAreaRoot/ScrollAreaRoot";
 import { ScrollAreaScrollbar } from "./ScrollAreaScrollbar/ScrollAreaScrollbar";
 import { ScrollAreaThumb } from "./ScrollAreaThumb/ScrollAreaThumb";
 import { ScrollAreaViewport } from "./ScrollAreaViewport/ScrollAreaViewport";
+import clsx from "clsx";
 
 export type ScrollAreaStylesNames =
   | "root"
@@ -58,7 +60,14 @@ export interface ScrollAreaProps extends BoxProps<"div"> {
   /** Defines `overscroll-behavior` of the viewport */
   overscrollBehavior?: React.CSSProperties["overscrollBehavior"];
 
+  /** disable ScrollArea—renders plain div instead */
+  disabled?: boolean;
+
   ref?: React.RefObject<HTMLDivElement>;
+
+  classNames?: Partial<Record<ScrollAreaStylesNames, string>>;
+
+  scrollbarZIndex?: number;
 }
 
 export interface ScrollAreaAutosizeProps extends ScrollAreaProps {}
@@ -77,6 +86,9 @@ export const ScrollArea = ({ ref, ...props }: ScrollAreaProps) => {
     onBottomReached,
     onTopReached,
     overscrollBehavior,
+    disabled = false,
+    classNames,
+    scrollbarZIndex = 1500,
     ...rest
   } = props;
 
@@ -87,7 +99,6 @@ export const ScrollArea = ({ ref, ...props }: ScrollAreaProps) => {
   const localViewportRef = useRef<HTMLDivElement>(null);
   const combinedViewportRef = useMergeRefs([viewportRef, localViewportRef]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!localViewportRef.current) {
       return;
@@ -112,6 +123,17 @@ export const ScrollArea = ({ ref, ...props }: ScrollAreaProps) => {
 
   const theme = useTheme();
 
+  if (disabled) {
+    return (
+      <Box
+        ref={ref}
+        {...rest}
+        className={clsx(rest.className, classNames?.root, classNames?.content)}
+      >
+        {children}
+      </Box>
+    );
+  }
   return (
     <ScrollAreaRoot
       ref={ref}
@@ -119,6 +141,7 @@ export const ScrollArea = ({ ref, ...props }: ScrollAreaProps) => {
       scrollHideDelay={scrollHideDelay}
       scrollbars={scrollbars}
       {...rest}
+      className={clsx(rest.className, classNames?.root)}
       style={
         {
           "--scrollarea-scrollbar-size": rem(scrollbarSize),
@@ -130,6 +153,7 @@ export const ScrollArea = ({ ref, ...props }: ScrollAreaProps) => {
             theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.4)" : "rgba(0, 0, 0, 0.4)",
           "--scrollbar-thumb-hover":
             theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)",
+          "--scrollbar-z-index": scrollbarZIndex,
           ...rest.style,
         } as React.CSSProperties
       }
@@ -157,6 +181,8 @@ export const ScrollArea = ({ ref, ...props }: ScrollAreaProps) => {
             onTopReached?.();
           }
         }}
+        className={classNames?.viewport}
+        contentClassName={classNames?.content}
       >
         {children}
       </ScrollAreaViewport>

@@ -4,7 +4,7 @@ import { useAppStore } from "store";
 import { useShouldSidebarClose, useShouldSidebarFold } from "./hooks";
 import clsx from "clsx";
 import _ from "@lodash";
-import getTheme from "@ig/utils/getTheme";
+import getTheme from "@ig/utils/get-theme";
 import { ThemeProvider } from "@mui/material/styles";
 import Drawer, { type DrawerProps } from "@mui/material/Drawer";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
@@ -20,7 +20,7 @@ export interface LayoutSidebarProps
 
 const LayoutSidebar = ({ position, children, className, ...props }: LayoutSidebarProps) => {
   const [
-    { layout: layoutConfig, radius: defaultRadius },
+    { layout: layoutConfig },
     {
       layout: layoutState,
       toggleSidebarHiddenOpen,
@@ -36,15 +36,7 @@ const LayoutSidebar = ({ position, children, className, ...props }: LayoutSideba
       state.auth.user.preference.ui?.layout?.[`${position}Sidebar`]?.folded,
     ]),
   );
-  const {
-    autohide,
-    fold,
-    // size,
-    radius,
-    // offset,
-    theme: themeId,
-    darkmode,
-  } = layoutConfig[`${position}Sidebar`];
+  const { autohide, autofold, theme: themeId, darkmode } = layoutConfig[`${position}Sidebar`];
   const { opened, hiddenOpened, folded, foldedOpened } = layoutState[`${position}Sidebar`];
 
   const shouldAutoClose = useShouldSidebarClose(position);
@@ -55,7 +47,7 @@ const LayoutSidebar = ({ position, children, className, ...props }: LayoutSideba
     }
   }, [shouldAutoClose, position, toggleSidebarHiddenOpen]);
   useEffect(() => {
-    if (fold.enabled) {
+    if (autofold.enabled) {
       if (shouldAutoFold && !folded) {
         toggleSidebarFold(position, true);
         toggleSidebarFoldedOpen(position, false);
@@ -65,7 +57,7 @@ const LayoutSidebar = ({ position, children, className, ...props }: LayoutSideba
       }
     }
   }, [
-    fold.enabled,
+    autofold.enabled,
     folded,
     position,
     shouldAutoFold,
@@ -73,20 +65,13 @@ const LayoutSidebar = ({ position, children, className, ...props }: LayoutSideba
     toggleSidebarFold,
     toggleSidebarFoldedOpen,
   ]);
-  const sidebarFolded = fold.enabled && folded;
+  const sidebarFolded = autofold.enabled && folded;
 
   const id = `${position}-sidebar`;
   const theme = getTheme({
     id: themeId,
     cssVariables: { cssVarPrefix: "ig", rootSelector: `#${id}` },
   });
-
-  const sidebarFoldedClosed = sidebarFolded && !layoutState[`${position}Sidebar`].foldedOpened;
-  const contentWidth = `calc(${
-    sidebarFoldedClosed
-      ? layoutConfig[`${position}Sidebar`].fold.size
-      : layoutConfig[`${position}Sidebar`].size
-  }px - ${layoutConfig[`${position}Sidebar`].offset}px)`;
 
   return (
     <ThemeProvider theme={theme}>
@@ -110,6 +95,7 @@ const LayoutSidebar = ({ position, children, className, ...props }: LayoutSideba
           id={id}
           component="aside"
           data-scheme={darkmode ? "dark" : "light"}
+          data-opened={opened}
           data-folded={sidebarFolded}
           data-folded-opened={!!foldedOpened}
           variant="persistent"
@@ -119,26 +105,10 @@ const LayoutSidebar = ({ position, children, className, ...props }: LayoutSideba
           onMouseEnter={sidebarFolded ? () => toggleSidebarFoldedOpen(position, true) : undefined}
           onMouseLeave={sidebarFolded ? () => toggleSidebarFoldedOpen(position, false) : undefined}
           {...props}
-          className={clsx(styles.sidebar, className)}
-          style={{
-            width: `var(--${position}-sidebar-wrapper-width)`,
-            borderRadius: radius ?? defaultRadius,
-            ...props.style,
-          }}
+          className={clsx(styles.sidebar, styles[`${position}Sidebar`], className)}
           slotProps={_.merge(
             {},
-            {
-              paper: {
-                elevation: 3,
-                className: styles.sidebarWrapper,
-                style: {
-                  width: contentWidth,
-                  height: `calc(100% - ${layoutConfig[`${position}Sidebar`].offset * 2}px)`,
-                  margin: `${layoutConfig[`${position}Sidebar`].offset}px`,
-                  ...(position === "right" ? { marginLeft: 0 } : { marginRight: 0 }),
-                } as React.CSSProperties,
-              },
-            },
+            { paper: { elevation: 3, className: styles.sidebarWrapper } },
             props.slotProps,
           )}
         >

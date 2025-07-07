@@ -6,10 +6,11 @@ export const DEFAULT_UI_CONFIG: UIConfig = {
       show: true,
       inner: false,
       autohide: {
-        scrollHeight: 0,
+        scrollHeight: 70,
+        size: 40,
       },
-      size: 60,
-      theme: "default",
+      size: 80,
+      theme: "default-dark",
       darkmode: false,
     },
     footer: {
@@ -26,7 +27,7 @@ export const DEFAULT_UI_CONFIG: UIConfig = {
         enabled: true,
         breakpoint: "sm",
       },
-      fold: {
+      autofold: {
         enabled: true,
         size: 80,
         breakpoint: "md",
@@ -44,7 +45,7 @@ export const DEFAULT_UI_CONFIG: UIConfig = {
         enabled: true,
         breakpoint: "sm",
       },
-      fold: {
+      autofold: {
         enabled: false,
       },
       offset: 0,
@@ -60,7 +61,7 @@ export const DEFAULT_UI_CONFIG: UIConfig = {
   },
   radius: 4,
   scale: 1,
-  scroll: "content",
+  scroll: "page",
 };
 
 export const DEFAULT_APP_CONFIG: AppConfig = {

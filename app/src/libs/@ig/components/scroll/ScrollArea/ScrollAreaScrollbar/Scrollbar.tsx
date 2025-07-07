@@ -1,3 +1,5 @@
+/** biome-ignore-all lint/correctness/useExhaustiveDependencies: <explanation> */
+/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import { useEffect, useRef, useState } from "react";
 import { useScrollAreaContext } from "../hooks";
 import { ScrollbarContext, type ScrollbarContextValue } from "./Scrollbar.context";
@@ -58,7 +60,6 @@ export const Scrollbar = (props: ScrollbarProps) => {
     }
   };
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const handleWheel = (event: WheelEvent) => {
       const element = event.target as HTMLElement;
@@ -68,11 +69,9 @@ export const Scrollbar = (props: ScrollbarProps) => {
       }
     };
     document.addEventListener("wheel", handleWheel, { passive: false });
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     return () => document.removeEventListener("wheel", handleWheel, { passive: false } as any);
   }, [viewport, scrollbar, maxScrollPos, handleWheelScroll]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(handleThumbPositionChange, [sizes, handleThumbPositionChange]);
 
   useResizeObserver(scrollbar, handleResize);

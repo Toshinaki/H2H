@@ -24,4 +24,11 @@ log = "0.4"
 tauri = { version = "2.5.0", features = [] }
 tauri-plugin-log = "2.0.0-rc"
 tokio = { version = "1.45.1", features = ["full"] }
-sqlx = { version = "0.8.6", features = ["runtime-tokio-rustls", "sqlite", "macros", "migrate"]  }
+sqlx = { version = "0.8.6", features = ["runtime-tokio-rustls", "sqlite", "macros", "migrate", "chrono"]  }
+chrono = "0.4.41"
+strum = "0.27.1"
+strum_macros = "0.27.1"
+
+[dev-dependencies]
+tokio = { version = "1.45.1", features = ["macros", "rt-multi-thread"] }
+sqlx = { version = "0.8.6", features = ["sqlite", "runtime-tokio", "macros"]  }

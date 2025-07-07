@@ -1,5 +1,6 @@
 import { alpha, type createTheme, type Theme } from "@mui/material/styles";
 import type { PartialDeep } from "type-fest";
+import { BREAKPOINTS } from "../constants";
 
 export const defaultThemeOptions: PartialDeep<Theme> = {
   typography: {
@@ -9,13 +10,7 @@ export const defaultThemeOptions: PartialDeep<Theme> = {
     fontWeightMedium: 500,
   },
   breakpoints: {
-    values: {
-      xs: 0, // Extra small devices
-      sm: 600, // Small devices
-      md: 960, // Medium devices
-      lg: 1280, // Large devices
-      xl: 1920, // Extra large devices
-    },
+    values: BREAKPOINTS,
   },
   components: {
     MuiSvgIcon: {

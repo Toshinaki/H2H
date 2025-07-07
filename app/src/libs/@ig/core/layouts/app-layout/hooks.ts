@@ -6,15 +6,15 @@ export const useSidebarFolded = (position: "left" | "right") => {
   const [{ layout: layoutConfig }, { layout: layoutState }] = useAppStore(
     useShallow((state) => [state.config.current.ui, state.ui]),
   );
-  const { fold } = position === "right" ? layoutConfig.rightSidebar : layoutConfig.leftSidebar;
+  const { autofold } = position === "right" ? layoutConfig.rightSidebar : layoutConfig.leftSidebar;
   const { folded } = position === "right" ? layoutState.rightSidebar : layoutState.leftSidebar;
 
-  return fold.enabled && folded;
+  return autofold.enabled && folded;
 };
 
 export const useShouldSidebarFold = (position: "left" | "right") => {
   const foldBreakpoint = useAppStore(
-    (state) => state.config.current.ui.layout[`${position}Sidebar`].fold.breakpoint,
+    (state) => state.config.current.ui.layout[`${position}Sidebar`].autofold.breakpoint,
   );
   return useSmallerThan(foldBreakpoint || 0);
 };

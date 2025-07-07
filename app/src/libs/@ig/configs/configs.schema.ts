@@ -1,15 +1,16 @@
 import { z } from "zod";
-import { deepPartialify } from "@ig/utils/deepPartialify";
+import { deepPartialify } from "@ig/utils/deep-partialify";
 import { ThemeIDSchema } from "./themes/theme.schema";
+import { breakpoints } from "./constants";
 
 //
 // UI settings ==================================================================
 //
 
-const BreakpointSchema = z.enum(["xs", "sm", "md", "lg", "xl"]);
-const SizeSchema = z.number().nonnegative();
-const ResponsiveSizeSchema = z.record(
-  z.union([BreakpointSchema, z.number().positive().int()]),
+export const BreakpointSchema = z.enum(breakpoints);
+export const SizeSchema = z.number().nonnegative();
+export const ResponsiveSizeSchema = z.record(
+  z.union([BreakpointSchema, z.number().positive().int(), z.literal("base")]),
   SizeSchema,
 );
 
@@ -28,9 +29,9 @@ const SidebarConfigSchema = z
       enabled: z.boolean(),
       breakpoint: z.union([BreakpointSchema, SizeSchema]).optional(),
     }),
-    fold: z.object({
+    autofold: z.object({
       enabled: z.boolean(),
-      breakpoint: z.union([BreakpointSchema, SizeSchema]).optional(), // auto fold if breakpoint is set; cannot pin if under breakpoint
+      breakpoint: z.union([BreakpointSchema, SizeSchema]).optional(), // auto autofold if breakpoint is set; cannot pin if under breakpoint
       size: z.union([SizeSchema, ResponsiveSizeSchema]).optional(), // size when folded
     }),
     offset: SizeSchema,
@@ -61,7 +62,7 @@ export const UIConfigSchema = z.object({
   layout: LayoutConfigSchema,
   scale: z.number().min(0.5).max(3).step(0.1),
   radius: z.number().int().min(0).max(40),
-  scroll: z.enum(["unset", "content"]),
+  scroll: z.enum(["unset", "content", "page"]),
 });
 
 // ui state
@@ -117,9 +118,7 @@ export const ConfigSchema = z.object({
 //
 
 export const PageOverrideUIConfigSchema = deepPartialify(
-  UIConfigSchema.pick({
-    scroll: true,
-  }).extend({
+  UIConfigSchema.pick({ scroll: true }).extend({
     layout: LayoutConfigSchema.extend({
       leftSidebar: LayoutConfigSchema.shape.leftSidebar.merge(
         SidebarStateSchema.pick({ folded: true }),

@@ -1,5 +1,4 @@
--- Add migration script here
--- Create playlists table
+-- Create playlist table
 CREATE TABLE playlist (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     url TEXT NOT NULL UNIQUE,
@@ -31,20 +30,45 @@ CREATE TABLE video_metadata (
     uploader TEXT,
     channel_url TEXT,
     thumbnail_url TEXT,
-    file_size_bytes INTEGER,
-    format_id TEXT,
     parse_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     error_message TEXT,
-    FOREIGN KEY (playlist_id) REFERENCES playlists(id)
+    -- Optional: Raw JSON output from yt-dlp for debugging/future parsing
+    _yt_dlp_json_raw TEXT,
+    FOREIGN KEY (playlist_id) REFERENCES playlist(id)
 );
 
--- Create downloads table
+-- Create video_format table
+CREATE TABLE video_format (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    video_metadata_id INTEGER NOT NULL,
+    format_id TEXT NOT NULL,
+    format_note TEXT,
+    ext TEXT,
+    acodec TEXT,
+    vcodec TEXT,
+    width INTEGER,
+    height INTEGER,
+    -- Can be NULL as it's an estimate
+    filesize_bytes INTEGER,
+    tbr_kbps REAL,
+    abr_kbps REAL,
+    vbr_kbps REAL,
+    preference INTEGER,
+    -- e.g., "1080p.mp4", "audio-only.m4a"
+    quality_string TEXT,
+    FOREIGN KEY (video_metadata_id) REFERENCES video_metadata(id),
+    UNIQUE (video_metadata_id, format_id) -- A video should only have one entry for a given format_id
+);
+
+-- Create download table
 CREATE TABLE download (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     -- Can be NULL if download started without full metadata (though ideally linked)
     metadata_id INTEGER,
     -- The original URL that was attempted to download
     source_url TEXT NOT NULL,
+    -- The format ID actually used for this download
+    chosen_format_id TEXT,
     file_path TEXT,
     -- e.g., 'Pending', 'Downloading', 'Paused', 'Completed', 'Failed', 'Cancelled'
     status TEXT NOT NULL,
@@ -61,6 +85,8 @@ CREATE TABLE download (
     download_size_bytes INTEGER,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    -- Raw JSON of yt-dlp options used for this download
+    _yt_dlp_options_json TEXT,
     FOREIGN KEY (metadata_id) REFERENCES video_metadata(id)
 );
 
@@ -69,6 +95,10 @@ CREATE INDEX IF NOT EXISTS idx_video_metadata_url ON video_metadata(url);
 
 CREATE INDEX IF NOT EXISTS idx_video_metadata_playlist_id ON video_metadata(playlist_id);
 
-CREATE INDEX IF NOT EXISTS idx_downloads_metadata_id ON downloads(metadata_id);
+CREATE INDEX IF NOT EXISTS idx_download_metadata_id ON download(metadata_id);
 
-CREATE INDEX IF NOT EXISTS idx_downloads_source_url ON downloads(source_url);
+CREATE INDEX IF NOT EXISTS idx_download_source_url ON download(source_url);
+
+CREATE INDEX IF NOT EXISTS idx_video_format_video_metadata_id ON video_format(video_metadata_id);
+
+CREATE INDEX IF NOT EXISTS idx_video_format_format_id ON video_format(format_id);
